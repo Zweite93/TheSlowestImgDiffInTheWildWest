@@ -127,7 +127,7 @@ namespace ImageDiff
                         coordList.Min(r => r.X), coordList.Min(r => r.Y)));
                 }
 
-                for (int i = 0; i < listOfAreas.Count; i++)
+                for (int i = 0; i < listOfAreas.Count - 1; i++)
                 {
                     for (int j = 0; j < listOfAreas.Count; j++)
                     {
