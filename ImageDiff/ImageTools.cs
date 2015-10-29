@@ -10,6 +10,29 @@ namespace ImageDiff
 {
     public static class ImageTool
     {
+        private class Coords
+        {
+            public int MaxX { get; set; }
+            public int MaxY { get; set; }
+            public int MinX { get; set; }
+            public int MinY { get; set; }
+            public int GetWidth()
+            {
+                return MaxX - MinX;
+            }
+            public int GetHeight()
+            {
+                return MaxY - MinY;
+            }
+            public Coords(int maxX, int maxY, int minX, int minY)
+            {
+                this.MaxX = maxX;
+                this.MaxY = maxY;
+                this.MinX = minX;
+                this.MinY = minY;
+            }
+
+        }
         private static bool rgbCompare(Color pixel1, Color pixel2)
         {
             int maxDifference = 15;
@@ -19,7 +42,42 @@ namespace ImageDiff
                 return true;
             return false;
         }
-        const int range = 10;
+        private static void MergeAreaCoords(ref List<Coords> listOfAreas, int i, int j)
+        {
+            if (listOfAreas[i].MaxX < listOfAreas[j].MaxX)
+                listOfAreas[i].MaxX = listOfAreas[j].MaxX;
+            if (listOfAreas[i].MaxY < listOfAreas[j].MaxY)
+                listOfAreas[i].MaxY = listOfAreas[j].MaxY;
+
+            if (listOfAreas[i].MinX > listOfAreas[j].MinX)
+                listOfAreas[i].MinX = listOfAreas[j].MinX;
+            if (listOfAreas[i].MinY > listOfAreas[j].MinY)
+                listOfAreas[i].MinY = listOfAreas[j].MinY;
+            listOfAreas.RemoveAt(j);
+        }
+        private static bool CompareAreaCoords(ref List<Coords> listOfAreas, int i, int j)
+        {
+            if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                    listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
+            {
+                MergeAreaCoords(ref listOfAreas, i, j);
+                return true;
+            }
+            else if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                        listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
+            {
+                MergeAreaCoords(ref listOfAreas, i, j);
+                return true;
+            }
+            else if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                        listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
+            {
+                MergeAreaCoords(ref listOfAreas, i, j);
+                return true;
+            }
+            return false;
+        }
+        const int range = 4;
         public static Bitmap GetDifferenceImage(Bitmap BMimage1, Bitmap BMimage2)
         {
             if (BMimage1.Width == BMimage2.Width && BMimage1.Height == BMimage2.Height)
@@ -28,7 +86,7 @@ namespace ImageDiff
                 int height = BMimage1.Height;
                 Bitmap BMimage3 = new Bitmap(width, height);
                 Dictionary<int, List<Point>> dictOfCoords = new Dictionary<int, List<Point>>();
-                Dictionary<int, List<int>> dictOfAreas = new Dictionary<int, List<int>>();
+                List<Coords> listOfAreas = new List<Coords>();
                 int ID = 1;
                 int tempID;
                 Func<Point, bool> isPointSuitable;
@@ -40,7 +98,6 @@ namespace ImageDiff
                         {
                             if (dictOfCoords.Count > 0)
                             {
-                                tempID = 0;
                                 isPointSuitable = point =>
                                     Math.Abs(point.X + x) <= range && Math.Abs(point.Y + y) <= range ||
                                     Math.Abs(point.X - x) <= range && Math.Abs(point.Y - y) <= range ||
@@ -72,12 +129,27 @@ namespace ImageDiff
                 }
                 foreach (var coordList in dictOfCoords.Values)
                 {
+                    listOfAreas.Add(new Coords(coordList.Max(r => r.X), coordList.Max(r => r.Y),
+                        coordList.Min(r => r.X), coordList.Min(r => r.Y)));
+                }
+
+                for (int i = 0; i < listOfAreas.Count; i++)
+                {
+                    for (int j = 0; j < listOfAreas.Count; j++)
+                    {
+                        if (!CompareAreaCoords(ref listOfAreas, i, j))
+                            CompareAreaCoords(ref listOfAreas, j, i);
+                    }
+                }
+
+                foreach (var coordList in listOfAreas)
+                {
                     Graphics g = Graphics.FromImage(BMimage1);
                     g.DrawRectangle(new Pen(Color.Red, 2f), new Rectangle(
-                        coordList.Min(r => r.X),
-                        coordList.Min(r => r.Y),
-                        Math.Abs(coordList.Max(r => r.X) - coordList.Min(r => r.X)),
-                        Math.Abs(coordList.Max(r => r.Y) - coordList.Min(r => r.Y))));
+                        coordList.MinX,
+                        coordList.MinY,
+                        coordList.GetWidth(),
+                        coordList.GetHeight()));
                 }
                 return BMimage1;
             }

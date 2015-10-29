@@ -1,0 +1,9 @@
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\bin\Debug\ImageDiff.exe.config
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\obj\Debug\ImageDiff.csprojResolveAssemblyReference.cache
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\obj\Debug\ImageDiff.Form1.resources
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\obj\Debug\ImageDiff.Properties.Resources.resources
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\obj\Debug\ImageDiff.csproj.GenerateResource.Cache
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\bin\Debug\ImageDiff.exe
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\bin\Debug\ImageDiff.pdb
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\obj\Debug\ImageDiff.exe
+C:\Users\Zweite\Documents\Visual Studio 2013\Projects\ImageDiff\ImageDiff\obj\Debug\ImageDiff.pdb
