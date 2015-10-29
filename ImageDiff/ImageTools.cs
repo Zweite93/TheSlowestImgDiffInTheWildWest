@@ -70,6 +70,7 @@ namespace ImageDiff
                     MergeAreaCoords(ref listOfAreas, i, j);
                     return true;
                 }
+<<<<<<< HEAD
                 else if (listOfAreas[i].MaxX > listOfAreas[j].MinX && listOfAreas[i].MaxX < listOfAreas[j].MaxX &&
                         listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
                 {
@@ -82,6 +83,8 @@ namespace ImageDiff
                     MergeAreaCoords(ref listOfAreas, i, j);
                     return true;
                 }
+=======
+>>>>>>> origin/master
             return false;
         }
         const int range = 5;
