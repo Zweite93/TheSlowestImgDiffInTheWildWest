@@ -57,18 +57,19 @@ namespace ImageDiff
         }
         private static bool CompareAreaCoords(ref List<Coords> listOfAreas, int i, int j)
         {
-            if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
-                    listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
-            {
-                MergeAreaCoords(ref listOfAreas, i, j);
-                return true;
-            }
-            else if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
-                        listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
-            {
-                MergeAreaCoords(ref listOfAreas, i, j);
-                return true;
-            }
+            if (i < listOfAreas.Count && j < listOfAreas.Count)
+                if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                        listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
+                {
+                    MergeAreaCoords(ref listOfAreas, i, j);
+                    return true;
+                }
+                else if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                            listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
+                {
+                    MergeAreaCoords(ref listOfAreas, i, j);
+                    return true;
+                }
             return false;
         }
         const int range = 6;
@@ -127,7 +128,7 @@ namespace ImageDiff
                         coordList.Min(r => r.X), coordList.Min(r => r.Y)));
                 }
 
-                for (int i = 0; i < listOfAreas.Count - 1; i++)
+                for (int i = 0; i < listOfAreas.Count; i++)
                 {
                     for (int j = 0; j < listOfAreas.Count; j++)
                     {
