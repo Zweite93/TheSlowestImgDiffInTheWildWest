@@ -57,21 +57,34 @@ namespace ImageDiff
         }
         private static bool CompareAreaCoords(ref List<Coords> listOfAreas, int i, int j)
         {
-            if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
-                    listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
-            {
-                MergeAreaCoords(ref listOfAreas, i, j);
-                return true;
-            }
-            else if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
-                        listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
-            {
-                MergeAreaCoords(ref listOfAreas, i, j);
-                return true;
-            }
+            if (i < listOfAreas.Count && j < listOfAreas.Count)
+                if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                        listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
+                {
+                    MergeAreaCoords(ref listOfAreas, i, j);
+                    return true;
+                }
+                else if (listOfAreas[i].MinX > listOfAreas[j].MinX && listOfAreas[i].MinX < listOfAreas[j].MaxX &&
+                            listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
+                {
+                    MergeAreaCoords(ref listOfAreas, i, j);
+                    return true;
+                }
+                else if (listOfAreas[i].MaxX > listOfAreas[j].MinX && listOfAreas[i].MaxX < listOfAreas[j].MaxX &&
+                        listOfAreas[i].MinY > listOfAreas[j].MinY && listOfAreas[i].MinY < listOfAreas[j].MaxY)
+                {
+                    MergeAreaCoords(ref listOfAreas, i, j);
+                    return true;
+                }
+                else if (listOfAreas[i].MaxX > listOfAreas[j].MinX && listOfAreas[i].MaxX < listOfAreas[j].MaxX &&
+                            listOfAreas[i].MaxY > listOfAreas[j].MinY && listOfAreas[i].MaxY < listOfAreas[j].MaxY)
+                {
+                    MergeAreaCoords(ref listOfAreas, i, j);
+                    return true;
+                }
             return false;
         }
-        const int range = 6;
+        const int range = 5;
         public static Bitmap GetDifferenceImage(Bitmap BMimage1, Bitmap BMimage2)
         {
             if (BMimage1.Width == BMimage2.Width && BMimage1.Height == BMimage2.Height)
