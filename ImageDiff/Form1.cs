@@ -60,7 +60,7 @@ namespace ImageDiff
                 pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
             }
             else
-                MessageBox.Show("Size do not mutch");
+                MessageBox.Show("Size do not match");
         }
     }
 }
